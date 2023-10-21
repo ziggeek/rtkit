@@ -12,6 +12,9 @@ import static java.util.stream.Collectors.toList;
 
 @Getter
 @Setter
+//Так как не было жестоко запрета на использования стандартных коллекций решил не изобретать велосипед.
+//Обоснование с точки зрения О-нотации: использовал везде ArrayList так как
+// у меня нет операций на ставку в середину, а лишь в конец. Константное время выполнения с точки зрения о-нотации
 public class Students {
 
     private List<Student> students = new ArrayList<>();
