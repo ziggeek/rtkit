@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 //Так как не было жестоко запрета на использования стандартных коллекций решил не изобретать велосипед.
 //Обоснование с точки зрения О-нотации: использовал везде ArrayList так как
 // у меня нет операций на ставку в середину, а лишь в конец. Константное время выполнения с точки зрения о-нотации
-public class Students {
+public class DataGroup {
 
     private List<Student> students = new ArrayList<>();
     private Map<Integer, List<Student>> sortedStudentsByGroup;
@@ -24,8 +24,8 @@ public class Students {
 
     private List<String> invalidLines = new ArrayList<>();
 
-    public static Students from(List<String> csvLines) {
-        Students newObj = new Students();
+    public static DataGroup from(List<String> csvLines) {
+        DataGroup newObj = new DataGroup();
 
         for (int i = 1; i < csvLines.size(); i++) {
             try {
