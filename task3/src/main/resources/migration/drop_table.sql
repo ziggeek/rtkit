@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS educational_plan CASCADE;
+--
+DROP TABLE IF EXISTS t_group CASCADE;
+--
+DROP TABLE IF EXISTS student CASCADE;
+--
+DROP TABLE IF EXISTS academic_performance CASCADE;
+
+
+
+
