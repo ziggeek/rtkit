@@ -28,7 +28,7 @@ public class DataLoaderImp implements DataLoader {
 
         List<String> csvData;
         try {
-            csvData = Files.readAllLines(Path.of("task3", "src", "main", "resources", "csv", "students.csv"));
+            csvData = Files.readAllLines(Path.of("task", "src", "main", "resources", "csv", "students.csv"));
             String size = String.format(" из %s", csvData.size());
 
             List<String> invalidLines = new ArrayList<>();
@@ -39,7 +39,7 @@ public class DataLoaderImp implements DataLoader {
                     var student = StudentDao.getInstance().save(StudentDto.from(csvData.get(i)), group);
                     var academicPerformances = AcademicPerformanceDao.getInstance().save(AcademicPerformanceDto.from(csvData.get(i)), student);
                 } catch (IllegalArgumentException e) {
-                    invalidLines.add(String.format("Некорректные данные в линии: %s", csvData.get(i)));
+                    invalidLines.add(String.format("\nНекорректные данные в линии: %s", csvData.get(i)));
                 }
             }
 
@@ -52,7 +52,7 @@ public class DataLoaderImp implements DataLoader {
 
     @Override
     public void drop_table() throws IOException {
-        var file = Files.readAllBytes(Path.of("task3", "src", "main", "resources", "migration", "drop_table.sql"));
+        var file = Files.readAllBytes(Path.of("task", "src", "main", "resources", "migration", "drop_table.sql"));
         String fileContent = new String(file);
         List<String> scriptsSql = Arrays.asList(fileContent.split("--"));
         DropDbTableDao.getInstance().init(scriptsSql);
@@ -60,7 +60,7 @@ public class DataLoaderImp implements DataLoader {
 
     @Override
     public void init_table() throws IOException {
-        var file = Files.readAllBytes(Path.of("task3", "src", "main", "resources", "migration", "init_table.sql"));
+        var file = Files.readAllBytes(Path.of("task", "src", "main", "resources", "migration", "init_table.sql"));
         String fileContent = new String(file);
         List<String> scriptsSql = Arrays.asList(fileContent.split("--"));
         CreateDbTableDao.getInstance().init(scriptsSql);
@@ -68,7 +68,7 @@ public class DataLoaderImp implements DataLoader {
 
     @Override
     public void clear_db() throws IOException {
-        var file = Files.readAllBytes(Path.of("task3", "src", "main", "resources", "migration", "clear_db.sql"));
+        var file = Files.readAllBytes(Path.of("task", "src", "main", "resources", "migration", "clear_db.sql"));
         String fileContent = new String(file);
         List<String> scriptsSql = Arrays.asList(fileContent.split("--"));
         ClearDbDao.getInstance().clear(scriptsSql);
