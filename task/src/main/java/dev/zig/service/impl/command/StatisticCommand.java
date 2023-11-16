@@ -33,4 +33,9 @@ public class StatisticCommand implements Command {
                 throw new InvalidCommandOptionException(option);
         }
     }
+
+    @Override
+    public void execute() {
+
+    }
 }

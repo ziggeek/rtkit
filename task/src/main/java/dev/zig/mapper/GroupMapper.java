@@ -1,6 +1,7 @@
 package dev.zig.mapper;
 
-import dev.zig.model.dto.AverageGradeByGroupDto;
+import dev.zig.model.dto.StudentWithAverageGradeDto;
+import dev.zig.model.dto.response.AverageGradeByGroupResponse;
 import dev.zig.model.entity.Student;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class GroupMapper {
     }
 
 
-    public AverageGradeByGroupDto from(List<Student> students) {
-        return AverageGradeByGroupDto.builder()
+    public AverageGradeByGroupResponse from(List<StudentWithAverageGradeDto> students) {
+        return AverageGradeByGroupResponse.builder()
                 .groupNumber(students.stream().findFirst().get().toString())
                 .students(students)
                 .build();

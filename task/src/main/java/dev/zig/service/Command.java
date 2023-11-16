@@ -3,6 +3,7 @@ package dev.zig.service;
 public interface Command {
 
     void execute(String option);
+    void execute();
 
     default void printHelp() {
         System.out.println("\n Usage: java -jar App.jar <command> <option> [args]");

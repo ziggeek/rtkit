@@ -17,14 +17,16 @@ public class App {
             new SimpleCommand().printHelp();
             throw new EmptyCommandException();
         } else {
-            var dataLoader = new DataLoaderImp();
-            var studentService = new StudentService(dataLoader);
-            studentService.getDataLoader().drop_table();
-            studentService.getDataLoader().init_table();
-            studentService.getDataLoader().init_data();
-            var commandBuilder = new CommandBuilder(studentService);
+
+            var commandBuilder = new CommandBuilder();
             var command = commandBuilder.buildCommand(args[0]);
-            command.execute(args[1]);
+
+            if (!args[0].equals("rest")){
+                command.execute(args[1]);
+            } else {
+                command.execute();
+            }
+
         }
     }
 }

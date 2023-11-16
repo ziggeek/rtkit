@@ -5,7 +5,8 @@ import dev.zig.service.Command;
 public class SimpleCommand implements Command {
 
     @Override
-    public void execute(String option) {
+    public void execute(String option) {}
 
-    }
+    @Override
+    public void execute() {}
 }

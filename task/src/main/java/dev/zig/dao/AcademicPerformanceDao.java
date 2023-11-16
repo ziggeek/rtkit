@@ -89,6 +89,25 @@ public class AcademicPerformanceDao {
         }
     }
 
+    public void updateGradeStudentByFioAndGroup(String firstname, String lastname, String number, String subject, Integer grade) {
+        var UPDATE_GRADE_STUDENT_BY_FIO_AND_GROUP =
+                "UPDATE academic_performance " +
+                "JOIN student ON academic_performance.student_id = student.id " +
+                "JOIN t_group ON student.group_id = t_group.id " +
+                "SET " + subject + " = " + grade + " " +
+                "WHERE student.firstname = ? AND student.lastname = ? AND t_group.number = ?";
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(UPDATE_GRADE_STUDENT_BY_FIO_AND_GROUP);
+        ) {
+            preparedStatement.setString(1, firstname);
+            preparedStatement.setString(1, lastname);
+            preparedStatement.setString(1, number);
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throw new DaoException(throwables);
+        }
+    }
+
     private AcademicPerformance buildAcademicPerformance(ResultSet resultSet) throws SQLException {
         return AcademicPerformance.builder()
                 .id(resultSet.getLong("id"))

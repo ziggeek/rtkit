@@ -3,6 +3,8 @@ package dev.zig.dao;
 import dev.zig.exception.DaoException;
 import dev.zig.model.dto.GroupDto;
 import dev.zig.model.dto.StudentDto;
+import dev.zig.model.dto.StudentWithAverageGradeDto;
+import dev.zig.model.dto.response.AverageGradeByGroupResponse;
 import dev.zig.model.entity.Group;
 import dev.zig.model.entity.Student;
 import dev.zig.util.ConnectionManager;
@@ -30,7 +32,7 @@ public class StudentDao {
 
 
     private static final String FIND_AVERAGE_GRADE_STUDENTS_BY_GROUP =
-            "SELECT student.id, firstname, lastname, group_id, t_number FROM student " +
+            "SELECT student.id, firstname, lastname, group_id, t_number, academic_performance.average_grade  FROM student " +
                     "JOIN academic_performance ON student.id = academic_performance.student_id " +
                     "JOIN t_group ON student.group_id = t_group.id " +
                     "WHERE t_number = ?";
@@ -100,16 +102,21 @@ public class StudentDao {
     }
 
 
-    public List<Student> findAverageGradeStudentsByGroup(String number) {
+    public AverageGradeByGroupResponse findAverageGradeStudentsByGroup(String number) {
         try (var connection = ConnectionManager.get();
              var preparedStatement = connection.prepareStatement(FIND_AVERAGE_GRADE_STUDENTS_BY_GROUP)) {
+
             preparedStatement.setString(1, number);
             var resultSet = preparedStatement.executeQuery();
-            List<Student> students = new ArrayList<>();
+
+            List<StudentWithAverageGradeDto> students = new ArrayList<>();
+            String groupNumber = "";
             while (resultSet.next()) {
-                students.add(buildStudent(resultSet));
+                students.add(buildStudentWithAverageGradeDto(resultSet));
+                groupNumber = resultSet.getString("t_number");
             }
-            return students;
+
+            return AverageGradeByGroupResponse.builder().groupNumber(groupNumber).students(students).build();
         } catch (SQLException throwables) {
             throw new DaoException(throwables);
         }
@@ -122,6 +129,15 @@ public class StudentDao {
                 .lastname(resultSet.getString("lastname"))
                 .age(resultSet.getInt("age"))
                 .group(GroupDao.getInstance().findById(resultSet.getLong("group_id")).get())
+                .build();
+    }
+
+    private StudentWithAverageGradeDto buildStudentWithAverageGradeDto(ResultSet resultSet) throws SQLException {
+        return StudentWithAverageGradeDto.builder()
+                .firstname(resultSet.getString("firstname"))
+                .lastname(resultSet.getString("lastname"))
+                .age(resultSet.getInt("age"))
+                .averageGrade(resultSet.getDouble("average_grade"))
                 .build();
     }
 }
