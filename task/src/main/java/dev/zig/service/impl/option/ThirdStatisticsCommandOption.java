@@ -16,11 +16,9 @@ public class ThirdStatisticsCommandOption implements Option {
 
     @Override
     public void execute() {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.err.print("Input lastname for finding: ");
-            String findStudentByLastname = scanner.next();
-            var averageGradeByLastname = new AcademicPerformanceDao().findAllStudentsByLastname(findStudentByLastname);
-            System.out.printf("Найдено %s совпадений по фамили \"%s\": %s \n", averageGradeByLastname.size(), findStudentByLastname, averageGradeByLastname);
-        }
+        var map = studentService.findAllStudentsByLastname();
+        var foundStudentByLastname = map.keySet().stream().findFirst().get();
+        var averageGradesListByLastname = map.get(foundStudentByLastname);
+        System.out.printf("\nНайдено %s совпадений по фамили \"%s\": %s \n", averageGradesListByLastname.size(), foundStudentByLastname, averageGradesListByLastname);
     }
 }

@@ -14,7 +14,7 @@ public class SecondStatisticsCommandOption implements Option {
 
     @Override
     public void execute() {
-        var studentList = new StudentDao().findExcellentStudentsOver14YO();
-        System.out.printf("Cписок всех отличников старше 14 лет: %s\n", studentList);
+        var studentList = studentService.findExcellentStudentsOver14YO();
+        System.out.printf("\nCписок всех отличников старше 14 лет: %s\n", studentList);
     }
 }

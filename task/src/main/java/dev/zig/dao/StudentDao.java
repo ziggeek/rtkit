@@ -29,6 +29,12 @@ public class StudentDao {
                     "WHERE age >= 14 AND academic_performance.average_grade = 5";
 
 
+    private static final String FIND_AVERAGE_GRADE_STUDENTS_BY_GROUP =
+            "SELECT student.id, firstname, lastname, group_id, t_number FROM student " +
+                    "JOIN academic_performance ON student.id = academic_performance.student_id " +
+                    "JOIN t_group ON student.group_id = t_group.id " +
+                    "WHERE t_number = ?";
+
     private static final StudentDao INSTANCE = new StudentDao();
 
     public StudentDao() {
@@ -82,6 +88,22 @@ public class StudentDao {
     public List<Student> findExcellentStudentsOver14YO() {
         try (var connection = ConnectionManager.get();
              var preparedStatement = connection.prepareStatement(FIND_EXCELLENT_STUDENTS_OVER_14_YO)) {
+            var resultSet = preparedStatement.executeQuery();
+            List<Student> students = new ArrayList<>();
+            while (resultSet.next()) {
+                students.add(buildStudent(resultSet));
+            }
+            return students;
+        } catch (SQLException throwables) {
+            throw new DaoException(throwables);
+        }
+    }
+
+
+    public List<Student> findAverageGradeStudentsByGroup(String number) {
+        try (var connection = ConnectionManager.get();
+             var preparedStatement = connection.prepareStatement(FIND_AVERAGE_GRADE_STUDENTS_BY_GROUP)) {
+            preparedStatement.setString(1, number);
             var resultSet = preparedStatement.executeQuery();
             List<Student> students = new ArrayList<>();
             while (resultSet.next()) {

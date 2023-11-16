@@ -15,7 +15,7 @@ public class FirstStatisticsCommandOption implements Option {
 
     @Override
     public void execute() {
-        var averageGrade = new StudentDao().findAverageGradeForUpperclassmans();
-        System.out.printf("Средний балл старшекласника: %s\n", averageGrade);
+        var averageGrade = studentService.findAverageGradeForUpperclassmans();
+        System.out.printf("\nСредний балл старшекласника: %s\n", averageGrade);
     }
 }
