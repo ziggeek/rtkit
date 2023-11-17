@@ -1,6 +1,5 @@
 package dev.zig.model.dto.response;
 
-import dev.zig.model.dto.StudentWithAverageGradeDto;
 import lombok.Builder;
 import lombok.Value;
 
@@ -11,5 +10,5 @@ import java.util.List;
 public class AverageGradeByGroupResponse {
 
     String groupNumber;
-    List<StudentWithAverageGradeDto> students;
+    List<StudentWithAverageGradeResponse> students;
 }

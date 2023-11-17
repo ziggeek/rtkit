@@ -1,37 +1,34 @@
 package dev.zig.mapper;
 
-import dev.zig.model.dto.StudentWithAverageGradeDto;
+import dev.zig.model.dto.StudentDto;
+import dev.zig.model.dto.response.StudentWithAverageGradeResponse;
 import dev.zig.model.entity.AcademicPerformance;
+import dev.zig.model.entity.Student;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class StudentMapper {
+@Mapper(uses = {
+        StudentMapper.class,
+        GroupMapper.class},
+        componentModel = "spring"
+)
+public interface StudentMapper {
 
-    private static final StudentMapper INSTANCE = new StudentMapper();
+    StudentMapper INSTANCE = Mappers.getMapper(StudentMapper.class);
 
-    public StudentMapper() {
-    }
+    @Mapping(target = "averageGrade", source = "academicPerformance.averageGrade")
+    StudentWithAverageGradeResponse fromEntity(Student student);
 
-    public static StudentMapper getInstance() {
-        return INSTANCE;
-    }
+    @Mapping(target = "firstname", source = "performance.student.firstname")
+    @Mapping(target = "lastname", source = "performance.student.lastname")
+    @Mapping(target = "age", source = "performance.student.age")
+    @Mapping(target = "group", source = "performance.student.group")
+    StudentDto toDto(AcademicPerformance performance);
 
-    public StudentWithAverageGradeDto fromEntity(AcademicPerformance academicPerformance) {
-        return StudentWithAverageGradeDto.builder()
-                .firstname(academicPerformance.getStudent().getFirstname())
-                .lastname(academicPerformance.getStudent().getLastname())
-                .age(academicPerformance.getStudent().getAge())
-                .averageGrade(academicPerformance.getAverageGrade())
-                .build();
-    }
+    List<StudentDto> toDto(List<AcademicPerformance> student);
 
-    public List<StudentWithAverageGradeDto> fromEntity(List<AcademicPerformance> academicPerformance) {
-        List<StudentWithAverageGradeDto> list = new ArrayList<>();
-        for (AcademicPerformance performance : academicPerformance) {
-            list.add(fromEntity(performance));
-        }
-        return list;
-    }
-
+    List<StudentWithAverageGradeResponse> fromEntity(List<Student> students);
 }

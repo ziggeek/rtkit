@@ -1,27 +1,16 @@
 package dev.zig.mapper;
 
-import dev.zig.model.dto.StudentWithAverageGradeDto;
-import dev.zig.model.dto.response.AverageGradeByGroupResponse;
-import dev.zig.model.entity.Student;
+import dev.zig.model.dto.GroupDto;
+import dev.zig.model.entity.Group;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-import java.util.List;
-
-public class GroupMapper {
-
-    private static final GroupMapper INSTANCE = new GroupMapper();
-
-    public GroupMapper() {
-    }
-
-    public static GroupMapper getInstance() {
-        return INSTANCE;
-    }
+@Mapper(uses = {GroupMapper.class}, componentModel = "spring")
+public interface GroupMapper {
 
 
-    public AverageGradeByGroupResponse from(List<StudentWithAverageGradeDto> students) {
-        return AverageGradeByGroupResponse.builder()
-                .groupNumber(students.stream().findFirst().get().toString())
-                .students(students)
-                .build();
-    }
+    GroupMapper INSTANCE = Mappers.getMapper(GroupMapper.class);
+
+    GroupDto toDto(Group group);
+
 }
